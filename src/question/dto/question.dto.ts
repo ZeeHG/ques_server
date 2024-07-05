@@ -1,4 +1,4 @@
-export class QuestionDto{
-    readonly title:string;
-    readonly desc:string;
+export class QuestionDto {
+  readonly title: string;
+  readonly desc: string;
 }
