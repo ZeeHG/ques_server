@@ -25,9 +25,11 @@ export class QuestionController {
   @Get() findAll(
     @Query('keyword') keyword: string,
     @Query('page') page: number,
-    @Query('size') size: number,
+    @Query('size') pageSize: number,
   ) {
-    return { list: ['a', 'b', 'c'], count: 10 };
+    const list = this.questionService.findAllList({ keyword, page, pageSize });
+    const count = this.questionService.countAll({ keyword });
+    return { list, count };
   }
   @Get('id') findOne(@Param('id') id: string) {
     return this.questionService.findOne(id);
