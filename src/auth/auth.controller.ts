@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreatedUserDto } from 'src/user/Dto/create-user.dto';
-import { AuthGuard } from './auth.guard';
+// import { AuthGuard } from './auth.guard';
 import { Public } from './decorators/public.decorator';
 @Controller('auth')
 export class AuthController {
@@ -18,7 +18,7 @@ export class AuthController {
     const { username, password } = userInfo;
     return await this.authService.signIn(username, password);
   }
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Get('profile')
   async getProfile(@Request() req) {
     return req.user;

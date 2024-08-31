@@ -9,6 +9,7 @@ import {
   Param,
   HttpException,
   HttpStatus,
+  Redirect,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreatedUserDto } from './Dto/create-user.dto';
@@ -25,7 +26,16 @@ export class UserController {
       throw new HttpException(e, HttpStatus.BAD_REQUEST);
     }
   }
-
+  @Get('info')
+  @Redirect('/api/auth/profile', 302)
+  async info() {
+    return 'info';
+  }
+  @Post('login')
+  @Redirect('/api/auth/login', 307) // http 状态码，POST 请求-308 永久，307 临时
+  async login() {
+    return;
+  }
   @Get() findAll(
     @Query('keyword') keyword: string,
     @Query('page') page: number,
