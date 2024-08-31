@@ -5,10 +5,11 @@ import { Injector } from '@nestjs/core/injector/injector';
 @Injectable()
 export class QuestionService {
   constructor(@InjectModel(Question.name) private readonly questionModel) {}
-  async create() {
+  async create(username: string) {
     const question = new this.questionModel({
       title: 'title' + Date.now(),
       desc: 'desc',
+      author: username,
     });
     return await question.save();
   }

@@ -7,6 +7,7 @@ import {
   Query,
   Delete,
   Param,
+  Request,
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
@@ -18,8 +19,9 @@ export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
 
   @Post()
-  create() {
-    return this.questionService.create();
+  create(@Request() req) {
+    const { username } = req.user;
+    return this.questionService.create(username);
   }
 
   @Get() findAll(
