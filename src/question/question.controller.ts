@@ -28,9 +28,25 @@ export class QuestionController {
     @Query('keyword') keyword: string,
     @Query('page') page: number,
     @Query('size') pageSize: number,
+    @Query('isDeleted') isDeleted: boolean = false,
+    @Query('isStar') isStar: boolean = false,
+    @Request() req,
   ) {
-    const list = this.questionService.findAllList({ keyword, page, pageSize });
-    const count = this.questionService.countAll({ keyword });
+    const { username } = req.user;
+    const list = this.questionService.findAllList({
+      keyword,
+      page,
+      pageSize,
+      isDeleted,
+      isStar,
+      author: username,
+    });
+    const count = this.questionService.countAll({
+      keyword,
+      isDeleted,
+      isStar,
+      author: username,
+    });
     return { list, count };
   }
   @Get('id') findOne(@Param('id') id: string) {
@@ -40,10 +56,23 @@ export class QuestionController {
   @Patch('id') updateOne(
     @Param('id') id: string,
     @Body() questionDto: QuestionDto,
+    @Request() req,
   ) {
-    return this.questionService.update(id, questionDto);
+    const { username } = req.user;
+    return this.questionService.update(id, questionDto, username);
   }
-  @Delete('id') deleteOne(@Param('id') id: string) {
-    return this.questionService.delete(id);
+  @Delete('id') deleteOne(@Param('id') id: string, @Request() req) {
+    const { username } = req.user;
+    return this.questionService.delete(id, username);
+  }
+  @Delete('id') deleteMany(@Body() body, @Request() req) {
+    const { username } = req.user;
+    const { ids = [] } = body;
+    return this.questionService.deleteMany(ids, username);
+  }
+  @Post('duplicate/;id')
+  duplicate(@Param('id') id: string, @Request() req) {
+    const { username } = req.user;
+    return this.questionService.duplicate(id, username);
   }
 }
