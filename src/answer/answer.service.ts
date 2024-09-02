@@ -13,4 +13,19 @@ export class AnswerService {
     const answer = new this.answerModel(answerInfo);
     return await answer.save();
   }
+
+  async count(questionId: string) {
+    if (!questionId) return 0;
+    return await this.answerModel.count({ questionId });
+  }
+  async findAll(questionId: string, opt: { page: number; pagesize: number }) {
+    if (!questionId) return [];
+    const { page = 1, pagesize = 10 } = opt;
+    const list = await this.answerModel
+      .find({ questionId })
+      .skip((page - 1) * pagesize)
+      .limit(pagesize)
+      .sort({ createdAt: -1 });
+    return list;
+  }
 }
