@@ -8,6 +8,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.useGlobalInterceptors(new TransformInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.enableCors;
   await app.listen(3005);
 }
 bootstrap();
