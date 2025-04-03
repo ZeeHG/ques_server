@@ -18,13 +18,13 @@ export class AnswerService {
     if (!questionId) return 0;
     return await this.answerModel.count({ questionId });
   }
-  async findAll(questionId: string, opt: { page: number; pagesize: number }) {
+  async findAll(questionId: string, opt: { page: number; size: number }) {
     if (!questionId) return [];
-    const { page = 1, pagesize = 10 } = opt;
+    const { page = 1, size = 10 } = opt;
     const list = await this.answerModel
       .find({ questionId })
-      .skip((page - 1) * pagesize)
-      .limit(pagesize)
+      .skip((page - 1) * size)
+      .limit(size)
       .sort({ createdAt: -1 });
     return list;
   }

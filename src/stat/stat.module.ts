@@ -4,7 +4,7 @@ import { StatController } from './stat.controller';
 import { QuestionModule } from 'src/question/question.module';
 import { AnswerModule } from 'src/answer/answer.module';
 @Module({
-  imports:[AnswerModule,QuestionModule]
+  imports:[AnswerModule,QuestionModule],
   providers: [StatService],
   controllers: [StatController],
 })

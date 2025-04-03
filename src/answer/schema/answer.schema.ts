@@ -8,8 +8,8 @@ export class Answer {
   @Prop({ required: true })
   questionId: string;
 
-  @Prop()
-  answerList: { componentFeId: string; value: string };
+  @Prop({ type: [{ componentFeId: String, value: String }] })
+  answerList: { componentFeId: string; value: string }[];
 
   @Prop()
   breed: string;
