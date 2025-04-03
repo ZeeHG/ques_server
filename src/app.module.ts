@@ -8,13 +8,12 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { AnswerModule } from './answer/answer.module';
 import { StatModule } from './stat/stat.module';
+import { Prop } from '@nestjs/mongoose';
 
 @Module({
   imports: [
     QuestionModule,
-    MongooseModule.forRoot(
-      `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DATABASE}`,
-    ),
+    MongooseModule.forRoot(`mongodb://127.0.0.1:27017/nestdb`),
     ConfigModule.forRoot(),
     UserModule,
     AuthModule,
