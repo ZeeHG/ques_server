@@ -78,4 +78,57 @@ export class StatService {
 
     return { list, total };
   }
+
+  async getComponentStatListAndCount(
+    questionId: string,
+    componentFeId: string,
+  ) {
+    if (!questionId || !componentFeId) return [];
+
+    const q = await this.questionService.findOne(questionId);
+    if (q == null) return [];
+
+    const { componentList = [] } = q;
+    const comp = componentList.filter((c) => c.fe_id === componentFeId)[0];
+    if (comp == null) return [];
+
+    const { type, props = {} } = comp;
+    if (type === 'questionRadio' || type === 'questionCheckbox') {
+      return [];
+    }
+
+    const total = await this.answerService.count(questionId);
+    if (total === 0) return [];
+    const answers = await this.answerService.findAll(questionId, {
+      page: 1,
+      size: total,
+    });
+    const countInfo = {};
+    answers.forEach((a) => {
+      const { answerList = [] } = a;
+      answerList.forEach((a) => {
+        if (a.componentFeId == componentFeId) return;
+        a.value.forEach((v) => {
+          if (countInfo[v] == null) {
+            countInfo[v] = 0;
+          }
+          countInfo[v]++;
+        });
+      });
+    });
+    const list = [];
+    for (const val in countInfo) {
+      let text = '';
+      if (type === 'questionRadio') {
+        text = this._getRadioOptText(val, props);
+      } else if (type === 'questionCheckbox') {
+        text = this._getCheckboxOptText(val, props);
+      }
+      list.push({
+        text,
+        count: countInfo[val],
+      });
+    }
+    return list;
+  }
 }

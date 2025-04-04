@@ -18,4 +18,15 @@ export class StatController {
       size: pageSize,
     });
   }
+
+  @Get(':questionId/:componentFeId')
+  async getComponentStat(
+    @Param('questionId') questionId: string,
+    @Param('componentFeId') componentFeId: string,
+  ) {
+    return await this.statService.getComponentStatListAndCount(
+      questionId,
+      componentFeId,
+    );
+  }
 }
