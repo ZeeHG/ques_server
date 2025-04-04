@@ -60,7 +60,7 @@ export class QuestionService {
     return await this.questionModel
       .find(whereOpt)
       .sort({ _id: -1 })
-      .skip(page - 1 * pageSize)
+      .skip((page - 1) * pageSize)
       .limit(pageSize);
   }
 

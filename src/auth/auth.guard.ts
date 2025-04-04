@@ -8,7 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from './decorators/public.decorator';
+import { IS_PUBLIC_KEY } from './public.decorator';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -33,11 +33,12 @@ export class AuthGuard implements CanActivate {
     }
     try {
       const payload = await this.jwtService.verifyAsync(token, {
-        secret: jwtConstants.secret,
+        secret: process.env.JWT_SECRET || 'your-secret-key',
       });
 
       request['user'] = payload;
-    } catch {
+    } catch (error) {
+      console.error('Token verification failed:', error);
       throw new UnauthorizedException('token无效');
     }
     return true;

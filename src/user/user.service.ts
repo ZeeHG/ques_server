@@ -27,7 +27,7 @@ export class UserService {
     return await this.userModel
       .find(whereOpt)
       .sort({ _id: -1 })
-      .skip(page - 1 * pageSize)
+      .skip((page - 1) * pageSize)
       .limit(pageSize);
   }
 

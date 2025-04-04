@@ -9,15 +9,19 @@ import {
 import { AuthService } from './auth.service';
 import { CreatedUserDto } from 'src/user/Dto/create-user.dto';
 // import { AuthGuard } from './auth.guard';
-import { Public } from './decorators/public.decorator';
+import { Public } from './public.decorator';
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @Public()
   @Post('login')
   async login(@Body() userInfo: CreatedUserDto) {
     const { username, password } = userInfo;
     return await this.authService.signIn(username, password);
   }
+
   // @UseGuards(AuthGuard)
   @Get('profile')
   async getProfile(@Request() req) {
